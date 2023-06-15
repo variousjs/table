@@ -8,8 +8,10 @@ import { ComponentType } from 'react'
 export type ObjectAny = Record<string, any>
 
 export interface Cell {
-  dataIndex: string,
   value: any,
+  error?: string,
+  disabled?: boolean,
+  [x: string]: any,
 }
 
 export interface State {
@@ -29,11 +31,22 @@ export interface TableProps extends AntdTableProps<ObjectAny> {
   columns: ColumnsType,
 }
 
-export interface RenderProps {
-  value: any,
-  onChange?: (value: any) => void,
+export interface RenderProps extends Cell {
+  onChange: (value: any) => void,
   record: ObjectAny,
   index: number,
+  dataIndex: string,
+  uniqueKey: string,
+  rowKey: string,
 }
 
 export type Renders = Record<string, ComponentType<RenderProps>>
+
+export interface RenderFromStateProps {
+  rowKey: string,
+  connector: Connector,
+  renderType: string,
+  record: ObjectAny,
+  index: number,
+  dataIndex: string,
+}

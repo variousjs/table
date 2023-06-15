@@ -1,9 +1,9 @@
 import Nycticorax from 'nycticorax'
 import type N from 'nycticorax'
-import { State, Renders } from './type'
+import { State, Renders, Cell } from './type'
 
 export default class {
-  private store: N<State>
+  public store: N<State>
   public renders: Renders
 
   constructor(renders: Renders) {
@@ -14,5 +14,9 @@ export default class {
 
   public setTableState(state: State) {
     this.store.emit(state)
+  }
+
+  public setCellState(key: string, data: Cell) {
+    this.store.emit({ [key]: data })
   }
 }

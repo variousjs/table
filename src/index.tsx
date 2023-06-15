@@ -1,44 +1,41 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import ReactDOM from 'react-dom/client'
 import Table, { ColumnsType, Connector } from './table'
 import Text from './renders/text'
-import { User } from './type'
+import Input from './renders/input'
+import data from './data.json'
 
 const connector = new Connector({
   text: Text,
+  input: Input,
 })
 
-const dataSource: User[] = [
-  {
-    id: '1',
-    name: 'Jack',
-  },
-  {
-    id: '2',
-    name: 'Sam',
-  },
-]
-
 const Entry = () => {
-  const columns: ColumnsType<User> = [
+  const columns: ColumnsType = [
     {
       title: 'ID',
       dataIndex: 'id',
+      renderType: 'input',
     },
     {
-      title: 'Name',
-      dataIndex: 'name',
+      title: 'Title',
+      dataIndex: 'title',
       renderType: 'text',
+    },
+    {
+      title: 'Price',
+      dataIndex: 'price',
+      renderType: 'input',
     },
   ]
 
   return (
     <div style={{ padding: 50 }}>
-      <Table<User>
-        dataSource={dataSource}
+      <Table
+        dataSource={data}
         columns={columns}
         rowKey="id"
-        pagination={false}
+        pagination={{ pageSize: 2 }}
         connector={connector}
       />
     </div>

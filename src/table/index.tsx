@@ -20,7 +20,6 @@ export default (props: TableProps) => {
       props.dataSource!.forEach((data) => {
         const rowKeyValue = data[props.rowKey]
         state[`${props.rowKey}_${rowKeyValue}_${dataIndex}`] = {
-          dataIndex,
           value: data[dataIndex],
         }
       })
@@ -32,7 +31,7 @@ export default (props: TableProps) => {
   const columns = props.columns.map((item) => {
     return {
       shouldCellUpdate: () => !props.connector,
-      render: getRenderer(item.renderType, props.connector),
+      render: getRenderer(props.rowKey, item, props.connector),
       ...item,
     }
   })

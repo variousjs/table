@@ -4,7 +4,7 @@ import { RenderProps } from '../table'
 export default (props: RenderProps) => {
   return (
     <>
-      {props.value.split('').join('-')}
+      {props.value?.split('').join('-')}
     </>
   )
 }
