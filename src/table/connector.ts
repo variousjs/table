@@ -5,6 +5,7 @@ import { State, Renders, Cell } from './type'
 export default class {
   public store: N<State>
   public renders: Renders
+  public rowKey?: string
 
   constructor(renders: Renders) {
     this.store = new Nycticorax<State>()
@@ -18,5 +19,14 @@ export default class {
 
   public setCellState(key: string, data: Cell) {
     this.store.emit({ [key]: data })
+  }
+
+  public getCellState(rowKeyValue: any, dataIndex: string) {
+    if (!this.rowKey) {
+      return null
+    }
+    const store = this.store.getStore()
+    const key = `${this.rowKey}_${rowKeyValue}_${dataIndex}`
+    return store[key]
   }
 }

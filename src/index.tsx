@@ -4,6 +4,7 @@ import Table, { ColumnsType, Connector } from './table'
 import Text from './renders/text'
 import Input from './renders/input'
 import data from './data.json'
+import { Button } from 'antd'
 
 const connector = new Connector({
   text: Text,
@@ -14,6 +15,7 @@ const PAGE_SIZE = 5
 
 const Entry = () => {
   const [currentPage, setCurrentPage] = useState(1)
+  const [dataSource, setDataSource] = useState(data)
 
   const columns: ColumnsType = [
     {
@@ -31,15 +33,31 @@ const Entry = () => {
       dataIndex: 'price',
       renderType: 'input',
     },
+    {
+      title: 'Delete',
+      dataIndex: 'id',
+      render: (v) => {
+        return <Button danger onClick={() => {
+          const next = dataSource.filter((s) => s.id !== v)
+          console.log(v, next.map(s => s.id))
+          setDataSource(next)
+        }}>Delete</Button>
+      }
+    }
   ]
 
   return (
     <div style={{ padding: 50 }}>
       <Table
-        dataSource={data}
+        dataSource={dataSource.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE)}
         columns={columns}
         rowKey="id"
-        pagination={{ pageSize: PAGE_SIZE, current: currentPage, total: data.length }}
+        pagination={{
+          pageSize: PAGE_SIZE,
+          current: currentPage,
+          total: dataSource.length,
+          showTotal: (total) => `Total ${total}`,
+        }}
         connector={connector}
         onChange={({ current }) => {
           setCurrentPage(current!)

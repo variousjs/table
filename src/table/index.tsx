@@ -18,9 +18,9 @@ export default (props: TableProps) => {
     props.columns.forEach((item: ColumnType) => {
       const { dataIndex } = item
       props.dataSource!.forEach((data) => {
-        const rowKeyValue = data[props.rowKey]
-        state[`${props.rowKey}_${rowKeyValue}_${dataIndex}`] = {
-          value: data[dataIndex],
+        const key = `${props.rowKey}_${data[props.rowKey]}_${dataIndex}`
+        if (!props.connector!.store.getStore()[key]) {
+          state[key] = { value: data[dataIndex] }
         }
       })
     })
@@ -28,9 +28,14 @@ export default (props: TableProps) => {
     props.connector.setTableState(state)
   }, [props.connector, props.dataSource, props.rowKey, props.columns])
 
+  useEffect(() => {
+    if (props.connector) {
+      props.connector.rowKey = props.rowKey
+    }
+  }, [props.rowKey, props.connector])
+
   const columns = props.columns.map((item) => {
     return {
-      shouldCellUpdate: () => !props.connector,
       render: getRenderer(props.rowKey, item, props.connector),
       ...item,
     }
