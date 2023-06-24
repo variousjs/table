@@ -17,8 +17,26 @@ export default class {
     this.store.emit(state)
   }
 
-  public setCellState(key: string, data: Cell) {
-    this.store.emit({ [key]: data })
+  public setCellState(
+    rowKeyValue: any,
+    dataIndex: string,
+    data: Pick<Cell, 'value' | 'disabled' | 'error'>,
+  ) {
+    const key = `${this.rowKey}_${rowKeyValue}_${dataIndex}`
+    const store = this.store.getStore()
+
+    if (!store[key]) {
+      return
+    }
+
+    const next: Cell = {
+      ...store[key]!,
+      value: data.value,
+      disabled: data.disabled,
+      error: data.error,
+    }
+
+    this.store.emit({ [key]: next })
   }
 
   public getCellState(rowKeyValue: any, dataIndex: string) {
@@ -28,5 +46,23 @@ export default class {
     const store = this.store.getStore()
     const key = `${this.rowKey}_${rowKeyValue}_${dataIndex}`
     return store[key]
+  }
+
+  public deleteRow(rowKeyValue: any) {
+    const store = this.store.getStore()
+    const next = {} as State
+
+    Object.keys(store)
+      .filter((key) => store[key]?.rowKeyValue === rowKeyValue)
+      .forEach((key) => next[key] = undefined)
+
+    this.store.emit(next, true)
+  }
+
+  public getTableValue() {
+    const store = this.store.getStore()
+    // const items = Object.keys(store)
+    //   .filter((key) => !!store[key])
+    //   .map((key) => store[key])
   }
 }

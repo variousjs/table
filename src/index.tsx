@@ -35,12 +35,12 @@ const Entry = () => {
     },
     {
       title: 'Delete',
-      dataIndex: 'id',
-      render: (v) => {
+      dataIndex: 'm',
+      render: (_, record) => {
         return <Button danger onClick={() => {
-          const next = dataSource.filter((s) => s.id !== v)
-          console.log(v, next.map(s => s.id))
+          const next = dataSource.filter((s) => s.id !== record.id)
           setDataSource(next)
+          connector.deleteRow(record.id)
         }}>Delete</Button>
       }
     }
@@ -48,6 +48,11 @@ const Entry = () => {
 
   return (
     <div style={{ padding: 50 }}>
+      <Button
+        onClick={() => {
+          connector.getTableValue()
+        }}
+        style={{ marginBottom: 10 }} type="primary">Get Table State</Button>
       <Table
         dataSource={dataSource.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE)}
         columns={columns}

@@ -11,11 +11,13 @@ export interface Cell {
   value: any,
   error?: string,
   disabled?: boolean,
-  [x: string]: any,
+  rowKey: string,
+  rowKeyValue: any,
+  dataIndex: string,
 }
 
 export interface State {
-  [rowKey_rowKeyValue_dataIndex: string]: Cell,
+  [rowKey_rowKeyValue_dataIndex: string]: Cell | undefined,
 }
 
 export interface ColumnType extends AntdColumnType<ObjectAny> {

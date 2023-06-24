@@ -1,4 +1,4 @@
-import { ColumnType, ObjectAny, RenderFromStateProps } from './type'
+import { ColumnType, RenderFromStateProps } from './type'
 import type Connector from './connector'
 
 const RenderFromState = (props: RenderFromStateProps) => {
@@ -17,7 +17,11 @@ const RenderFromState = (props: RenderFromStateProps) => {
   }
 
   const onChange = (value: any) => {
-    props.connector.setCellState(key, { ...current, value })
+    props.connector.setCellState(
+      props.record[props.rowKey],
+      props.dataIndex,
+      { value },
+    )
   }
 
   return (

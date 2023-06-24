@@ -18,9 +18,18 @@ export default (props: TableProps) => {
     props.columns.forEach((item: ColumnType) => {
       const { dataIndex } = item
       props.dataSource!.forEach((data) => {
+        if (data[dataIndex] === undefined) {
+          return
+        }
         const key = `${props.rowKey}_${data[props.rowKey]}_${dataIndex}`
-        if (!props.connector!.store.getStore()[key]) {
-          state[key] = { value: data[dataIndex] }
+        const store = props.connector!.store.getStore()
+        if (!store[key]) {
+          state[key] = {
+            value: data[dataIndex],
+            rowKey: props.rowKey,
+            rowKeyValue: data[props.rowKey],
+            dataIndex,
+          }
         }
       })
     })
