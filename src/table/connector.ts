@@ -1,6 +1,6 @@
 import Nycticorax from 'nycticorax'
 import type N from 'nycticorax'
-import { State, Renders, Cell } from './type'
+import { State, Renders, Cell, ObjectAny } from './type'
 
 export default class {
   public store: N<State>
@@ -59,10 +59,17 @@ export default class {
     this.store.emit(next, true)
   }
 
-  public getTableValue() {
+  public getTableState(dataSource: ObjectAny[]) {
     const store = this.store.getStore()
-    // const items = Object.keys(store)
-    //   .filter((key) => !!store[key])
-    //   .map((key) => store[key])
+    return dataSource.map((item) => {
+      const next = { ...item }
+      Object.keys(item).forEach((dataIndex) => {
+        const key = `${this.rowKey}_${item[this.rowKey!]}_${dataIndex}`
+        if (store[key]) {
+          next[dataIndex] = store[key]?.value
+        }
+      })
+      return next
+    })
   }
 }

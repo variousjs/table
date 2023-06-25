@@ -50,23 +50,25 @@ const Entry = () => {
     <div style={{ padding: 50 }}>
       <Button
         onClick={() => {
-          connector.getTableValue()
+          const value = connector.getTableState(dataSource)
+          console.log(value)
         }}
         style={{ marginBottom: 10 }} type="primary">Get Table State</Button>
       <Table
-        dataSource={dataSource.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE)}
+        // dataSource={dataSource.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE)}
+        dataSource={dataSource}
         columns={columns}
         rowKey="id"
         pagination={{
           pageSize: PAGE_SIZE,
-          current: currentPage,
+          // current: currentPage,
           total: dataSource.length,
           showTotal: (total) => `Total ${total}`,
         }}
         connector={connector}
-        onChange={({ current }) => {
-          setCurrentPage(current!)
-        }}
+        // onChange={({ current }) => {
+        //   setCurrentPage(current!)
+        // }}
       />
     </div>
   )
