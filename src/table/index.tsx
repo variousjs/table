@@ -6,16 +6,18 @@ import {
 } from './type'
 
 export { default as Connector } from './connector'
-export type { ColumnType, ColumnsType, TableProps, RenderProps } from './type'
+export type { ColumnType, TableProps, RenderProps } from './type'
 
 export default (props: TableProps) => {
   useEffect(() => {
-    if (!props.connector || !props.dataSource) {
+    if (!props.connector || !props.dataSource || !props.rowKey || !props.columns) {
       return
     }
 
+    props.connector.rowKey = props.rowKey
+
     const state = {} as State
-    props.columns.forEach((item: ColumnType) => {
+    props.columns.forEach((item) => {
       const { dataIndex } = item
       props.dataSource!.forEach((data) => {
         if (data[dataIndex] === undefined) {
@@ -36,12 +38,6 @@ export default (props: TableProps) => {
 
     props.connector.setTableState(state)
   }, [props.connector, props.dataSource, props.rowKey, props.columns])
-
-  useEffect(() => {
-    if (props.connector) {
-      props.connector.rowKey = props.rowKey
-    }
-  }, [props.rowKey, props.connector])
 
   const columns = props.columns.map((item) => {
     return {

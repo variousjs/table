@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import ReactDOM from 'react-dom/client'
-import Table, { ColumnsType, Connector } from './table'
+import Table, { Connector, ColumnType } from './table'
 import Text from './renders/text'
 import Input from './renders/input'
 import data from './data.json'
@@ -17,7 +17,7 @@ const Entry = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const [dataSource, setDataSource] = useState(data)
 
-  const columns: ColumnsType = [
+  const columns: ColumnType[] = [
     {
       title: 'ID',
       dataIndex: 'id',

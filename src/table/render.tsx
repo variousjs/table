@@ -31,7 +31,6 @@ const RenderFromState = (props: RenderFromStateProps) => {
       index={props.index}
       dataIndex={props.dataIndex}
       onChange={onChange}
-      uniqueKey={key}
       rowKey={props.rowKey}
     />
   )

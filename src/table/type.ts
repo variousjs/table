@@ -20,29 +20,28 @@ export interface State {
   [rowKey_rowKeyValue_dataIndex: string]: Cell | undefined,
 }
 
-export interface ColumnType extends AntdColumnType<ObjectAny> {
+export interface ColumnType<D extends object = ObjectAny> extends AntdColumnType<D> {
   dataIndex: string,
   renderType?: string,
-  hidden?: boolean,
 }
-export type ColumnsType = ColumnType[]
 
-export interface TableProps extends AntdTableProps<ObjectAny> {
+export interface TableProps<D extends object = ObjectAny> extends AntdTableProps<D> {
   rowKey: string,
   connector?: Connector,
-  columns: ColumnsType,
+  columns: ColumnType<D>[],
 }
 
-export interface RenderProps extends Cell {
-  onChange: (value: any) => void,
-  record: ObjectAny,
+export interface RenderProps<D extends object = ObjectAny> extends Cell {
+  onChange: (value: Cell['value']) => void,
+  record: D,
   index: number,
-  dataIndex: string,
-  uniqueKey: string,
-  rowKey: string,
 }
 
-export type Renders = Record<string, ComponentType<RenderProps>>
+export type Render<D extends object = ObjectAny> = ComponentType<RenderProps<D>>
+
+// Internal
+
+export type Renders = Record<string, Render>
 
 export interface RenderFromStateProps {
   rowKey: string,
