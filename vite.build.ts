@@ -4,7 +4,10 @@ export default defineConfig({
   build: {
     outDir: './dist',
     rollupOptions: {
-      external: ["react"],
+      external: ["react", "antd"],
+      output: {
+        exports: 'named',
+      },
     },
     minify: false,
     lib: {

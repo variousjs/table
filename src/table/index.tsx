@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Table } from 'antd'
+import { Table as AntdTable } from 'antd'
 import getRenderer from './render'
 import {
   State, TableProps, ColumnType,
@@ -8,7 +8,7 @@ import {
 export { default as Connector } from './connector'
 export type { ColumnType, TableProps, RenderProps } from './type'
 
-export default (props: TableProps) => {
+const Table = (props: TableProps) => {
   useEffect(() => {
     if (!props.connector || !props.dataSource || !props.rowKey || !props.columns) {
       return
@@ -47,9 +47,11 @@ export default (props: TableProps) => {
   })
 
   return (
-    <Table
+    <AntdTable
       {...props}
       columns={columns}
     />
   )
 }
+
+export default Table
