@@ -4,7 +4,7 @@ export default defineConfig({
   build: {
     outDir: './dist',
     rollupOptions: {
-      external: ["react", "antd"],
+      external: ["react", "antd", "react/jsx-runtime"],
       output: {
         exports: 'named',
       },
