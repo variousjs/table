@@ -23,7 +23,7 @@
   "author": "LoeiFy <LoeiFy@gmail.com>",
   "license": "MIT",
   "peerDependencies": {
-    "antd": ">5",
+    "antd": "*",
     "react": ">=16.8.0"
   },
   "devDependencies": {
