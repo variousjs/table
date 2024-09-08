@@ -6,6 +6,46 @@ import Input from './renders/input'
 import data from './data.json'
 import { Button } from 'antd'
 
+interface Product {
+  id: number
+  title: string
+  description: string
+  category: string
+  price: number
+  discountPercentage: number
+  rating: number
+  stock: number
+  tags: Array<string>
+  brand: string
+  sku: string
+  weight: number
+  dimensions: {
+    width: number
+    height: number
+    depth: number
+  }
+  warrantyInformation: string
+  shippingInformation: string
+  availabilityStatus: string
+  reviews: Array<{
+    rating: number
+    comment: string
+    date: string
+    reviewerName: string
+    reviewerEmail: string
+  }>
+  returnPolicy: string
+  minimumOrderQuantity: number
+  meta: {
+    createdAt: string
+    updatedAt: string
+    barcode: string
+    qrCode: string
+  }
+  thumbnail: string
+  images: Array<string>
+}
+
 const connector = new Connector({
   text: Text,
   input: Input,
@@ -15,9 +55,9 @@ const PAGE_SIZE = 5
 
 const Entry = () => {
   const [currentPage, setCurrentPage] = useState(1)
-  const [dataSource, setDataSource] = useState(data)
+  const [dataSource, setDataSource] = useState<Product[]>(data as Product[])
 
-  const columns: ColumnType[] = [
+  const columns: ColumnType<Product>[] = [
     {
       title: 'ID',
       dataIndex: 'id',

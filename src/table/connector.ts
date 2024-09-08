@@ -1,11 +1,12 @@
 import Nycticorax from 'nycticorax'
 import type N from 'nycticorax'
+import { TableProps } from 'antd/es/table'
 import { State, Renders, Cell, ObjectAny } from './type'
 
-export default class {
+export default class<D extends object = ObjectAny> {
   public store: N<State>
   public renders: Renders
-  public rowKey?: string
+  public rowKey?: TableProps<D>['rowKey']
 
   constructor(renders: Renders) {
     this.store = new Nycticorax<State>()
@@ -22,7 +23,7 @@ export default class {
     dataIndex: string,
     data: Pick<Cell, 'value' | 'disabled' | 'error'>,
   ) {
-    const key = `${this.rowKey}_${rowKeyValue}_${dataIndex}`
+    const key = `${String(this.rowKey)}_${rowKeyValue}_${dataIndex}`
     const store = this.store.getStore()
 
     if (!store[key]) {
@@ -44,7 +45,7 @@ export default class {
       return null
     }
     const store = this.store.getStore()
-    const key = `${this.rowKey}_${rowKeyValue}_${dataIndex}`
+    const key = `${String(this.rowKey)}_${rowKeyValue}_${dataIndex}`
     return store[key]
   }
 
@@ -64,7 +65,7 @@ export default class {
     return dataSource.map((item) => {
       const next = { ...item }
       Object.keys(item).forEach((dataIndex) => {
-        const key = `${this.rowKey}_${item[this.rowKey!]}_${dataIndex}`
+        const key = `${String(this.rowKey)}_${item[String(this.rowKey!)]}_${dataIndex}`
         if (store[key]) {
           next[dataIndex] = store[key]?.value
         }

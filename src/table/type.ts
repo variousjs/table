@@ -21,14 +21,11 @@ export interface State {
 }
 
 export interface ColumnType<D extends object = ObjectAny> extends AntdColumnType<D> {
-  dataIndex: string,
   renderType?: string,
 }
 
 export interface TableProps<D extends object = ObjectAny> extends AntdTableProps<D> {
-  rowKey: string,
   connector?: Connector,
-  columns: ColumnType<D>[],
 }
 
 export interface RenderProps<D extends object = ObjectAny> extends Cell {

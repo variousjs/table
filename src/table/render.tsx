@@ -36,7 +36,7 @@ const RenderFromState = (props: RenderFromStateProps) => {
   )
 }
 
-export default (rowKey: string, column: ColumnType, connector?: Connector) => {
+export default (rowKey: string, column: ColumnType<any>, connector?: Connector) => {
   const render: ColumnType['render'] = (
     value,
     record,

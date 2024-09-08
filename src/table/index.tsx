@@ -2,35 +2,36 @@ import React, { useEffect } from 'react'
 import { Table as AntdTable } from 'antd'
 import getRenderer from './render'
 import {
-  State, TableProps, ColumnType,
+  State, TableProps, ObjectAny, ColumnType,
 } from './type'
 
 export { default as Connector } from './connector'
 export type { ColumnType, TableProps, RenderProps } from './type'
 
-const Table = (props: TableProps) => {
+function Table<D extends object = ObjectAny>(props: TableProps<D>) {
   useEffect(() => {
     if (!props.connector || !props.dataSource || !props.rowKey || !props.columns) {
       return
     }
 
-    props.connector.rowKey = props.rowKey
+    props.connector.rowKey = props.rowKey as string
 
     const state = {} as State
-    props.columns.forEach((item) => {
-      const { dataIndex } = item
+    props.columns.forEach((item: ColumnType<D>) => {
+      const dataIndex = item.dataIndex as keyof D
+      const rowKey = props.rowKey as keyof D
       props.dataSource!.forEach((data) => {
-        if (data[dataIndex] === undefined) {
+        if (!dataIndex || data[dataIndex] === undefined) {
           return
         }
-        const key = `${props.rowKey}_${data[props.rowKey]}_${dataIndex}`
+        const key = `${String(rowKey)}_${data[rowKey]}_${String(dataIndex)}`
         const store = props.connector!.store.getStore()
         if (!store[key]) {
           state[key] = {
             value: data[dataIndex],
-            rowKey: props.rowKey,
-            rowKeyValue: data[props.rowKey],
-            dataIndex,
+            rowKey: props.rowKey as string,
+            rowKeyValue: data[rowKey],
+            dataIndex: dataIndex as string,
           }
         }
       })
@@ -39,9 +40,9 @@ const Table = (props: TableProps) => {
     props.connector.setTableState(state)
   }, [props.connector, props.dataSource, props.rowKey, props.columns])
 
-  const columns = props.columns.map((item) => {
+  const columns = props.columns?.map((item) => {
     return {
-      render: getRenderer(props.rowKey, item, props.connector),
+      render: getRenderer(props.rowKey as string, item, props.connector),
       ...item,
     }
   })
@@ -49,7 +50,7 @@ const Table = (props: TableProps) => {
   return (
     <AntdTable
       {...props}
-      columns={columns}
+      columns={columns as ColumnType<D>[]}
     />
   )
 }
