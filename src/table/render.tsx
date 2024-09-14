@@ -2,7 +2,7 @@ import { ColumnType, RenderFromStateProps } from './type'
 import type Connector from './connector'
 
 const RenderFromState = (props: RenderFromStateProps) => {
-  const key = `${props.rowKey}_${props.record[props.rowKey]}_${props.dataIndex}`
+  const key = `${props.rowKey}_${props.record[props.rowKey]}_${props.column.dataIndex}`
   const store = props.connector.store.useStore(key)
   const current = store[key]
 
@@ -10,7 +10,7 @@ const RenderFromState = (props: RenderFromStateProps) => {
     return null
   }
 
-  const Renderer = props.connector.renders[props.renderType]
+  const Renderer = props.connector.renders[props.column.renderType!]
 
   if (!Renderer) {
     return current.value
@@ -19,7 +19,7 @@ const RenderFromState = (props: RenderFromStateProps) => {
   const onChange = (value: any) => {
     props.connector.setCellState(
       props.record[props.rowKey],
-      props.dataIndex,
+      props.column.dataIndex,
       { value },
     )
   }
@@ -29,9 +29,10 @@ const RenderFromState = (props: RenderFromStateProps) => {
       {...current}
       record={props.record}
       index={props.index}
-      dataIndex={props.dataIndex}
+      dataIndex={props.column.dataIndex}
       onChange={onChange}
       rowKey={props.rowKey}
+      column={props.column}
     />
   )
 }
@@ -50,10 +51,9 @@ export default (rowKey: string, column: ColumnType<any>, connector?: Connector) 
       <RenderFromState
         rowKey={rowKey}
         connector={connector}
-        renderType={column.renderType}
         record={record}
         index={index}
-        dataIndex={column.dataIndex}
+        column={column}
       />
     )
   }

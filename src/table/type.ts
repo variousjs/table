@@ -32,6 +32,7 @@ export interface RenderProps<D extends object = ObjectAny> extends Cell {
   onChange: (value: Cell['value']) => void,
   record: D,
   index: number,
+  column: ColumnType<D>,
 }
 
 export type Render<D extends object = ObjectAny> = ComponentType<RenderProps<D>>
@@ -43,8 +44,7 @@ export type Renders = Record<string, Render>
 export interface RenderFromStateProps {
   rowKey: string,
   connector: Connector,
-  renderType: string,
   record: ObjectAny,
   index: number,
-  dataIndex: string,
+  column: ColumnType<any>,
 }
