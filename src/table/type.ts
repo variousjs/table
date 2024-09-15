@@ -22,6 +22,7 @@ export interface State {
 
 export interface ColumnType<D extends object = ObjectAny> extends AntdColumnType<D> {
   renderType?: string,
+  componentProps?: ObjectAny,
 }
 
 export interface TableProps<D extends object = ObjectAny> extends AntdTableProps<D> {
